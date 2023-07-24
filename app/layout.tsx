@@ -1,5 +1,14 @@
+'use client'
+import Header from '@/components/Header'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import SideBar from '@/components/SideBar'
+import { ThemeProvider } from 'next-themes'
+import Providers from '@/components/Providers'
+import { PageWrapper } from './page-wrapper'
+import { AnimatePresence,motion } from 'framer-motion'
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -9,13 +18,43 @@ export const metadata = {
 }
 
 export default function RootLayout({
+  
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    
+    
+      <html lang="en">
+
+        <body className={inter.className} >
+        <AnimatePresence>
+          <motion.div
+          key="modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          >
+
+       <PageWrapper>
+          <Providers>
+        <ThemeProvider enableSystem={true} attribute='class'>
+          <Header />
+          <div className='flex overflow-hidden'>
+            <SideBar />
+            {children}
+          </div>
+          </ThemeProvider>
+          </Providers>
+          </PageWrapper>
+          </motion.div>
+          </AnimatePresence>  
+         
+
+        </body>
+      </html>
+   
+
   )
 }
